@@ -82,7 +82,7 @@ class AbstractService {
    * @returns {*}
    */
   validateParams(params, schema, strict = true) {
-    const ret = Joi.validate(args, schema, { stripUnknown: false, allowUnknown: !strict, presence: 'required' });
+    const ret = Joi.validate(params, schema, { stripUnknown: false, allowUnknown: !strict, presence: 'required' });
     if (ret.error) {
       throw ret.error;
     }

@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = {
-  AbstractService: require('./src/abstract-service'),
-  EventPublisher: require('./src/event-publisher'),
-  EventPublisherAmqp: require('./src/event-publisher-amqp'),
-  EventSubscriber: require('./src/event-subscriber'),
-  EventSubscriberAmqp: require('./src/event-subscriber-amqp'),
+  AbstractService: require('./abstract-service'),
+  EventPublisher: require('./event-publisher'),
+  EventPublisherAmqp: require('./event-publisher-amqp'),
+  EventSubscriber: require('./event-subscriber'),
+  EventSubscriberAmqp: require('./event-subscriber-amqp'),
   Joi: require('joi')
 };

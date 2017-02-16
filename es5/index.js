@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   AbstractService: require('./src/abstract-service'),
   EventPublisher: require('./src/event-publisher'),

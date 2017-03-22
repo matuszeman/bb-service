@@ -43,6 +43,9 @@ class EventSubscriberAmqp extends EventEmitter {
         },
         nack: function() {
           ch.nack(msg);
+        },
+        reject: function() {
+          ch.reject(msg);
         }
       });
     }, {

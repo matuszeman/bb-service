@@ -134,6 +134,9 @@ var EventSubscriberAmqp = function (_EventEmitter) {
                     },
                     nack: function nack() {
                       ch.nack(msg);
+                    },
+                    reject: function reject() {
+                      ch.reject(msg);
                     }
                   });
                 }, {

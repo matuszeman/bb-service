@@ -1,8 +1,18 @@
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _promise = require('babel-runtime/core-js/promise');
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _promise2 = _interopRequireDefault(_promise);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _ = require('lodash');
 var Joi = require('joi');
@@ -48,7 +58,7 @@ var AbstractService = function () {
    * @param {Joi} optionsSchema
    */
   function AbstractService(options, optionsSchema) {
-    _classCallCheck(this, AbstractService);
+    (0, _classCallCheck3.default)(this, AbstractService);
 
     this.options = {};
     this.optionsSchema = optionsSchema || {};
@@ -67,15 +77,15 @@ var AbstractService = function () {
    */
 
 
-  _createClass(AbstractService, [{
+  (0, _createClass3.default)(AbstractService, [{
     key: 'validateParamsAsync',
     value: function validateParamsAsync(params, schema) {
       var strict = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
       try {
-        return Promise.resolve(this.validateParams(params, schema, strict));
+        return _promise2.default.resolve(this.validateParams(params, schema, strict));
       } catch (err) {
-        return Promise.reject(err);
+        return _promise2.default.reject(err);
       }
     }
 
@@ -129,7 +139,6 @@ var AbstractService = function () {
       return ret.value;
     }
   }]);
-
   return AbstractService;
 }();
 

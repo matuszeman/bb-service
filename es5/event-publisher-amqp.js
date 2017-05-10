@@ -1,25 +1,49 @@
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _stringify = require('babel-runtime/core-js/json/stringify');
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+var _stringify2 = _interopRequireDefault(_stringify);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _regenerator = require('babel-runtime/regenerator');
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _regenerator2 = _interopRequireDefault(_regenerator);
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Joi = require('joi');
 var EventPublisher = require('./event-publisher');
 
 var EventPublisherAmqp = function (_EventPublisher) {
-  _inherits(EventPublisherAmqp, _EventPublisher);
+  (0, _inherits3.default)(EventPublisherAmqp, _EventPublisher);
 
   function EventPublisherAmqp(eventPublisherAmqpOpts, amqpConnection) {
-    _classCallCheck(this, EventPublisherAmqp);
+    (0, _classCallCheck3.default)(this, EventPublisherAmqp);
 
-    var _this = _possibleConstructorReturn(this, (EventPublisherAmqp.__proto__ || Object.getPrototypeOf(EventPublisherAmqp)).call(this));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (EventPublisherAmqp.__proto__ || (0, _getPrototypeOf2.default)(EventPublisherAmqp)).call(this));
 
     _this.options = Joi.attempt(eventPublisherAmqpOpts, {
       exchange: Joi.string().required(),
@@ -30,12 +54,12 @@ var EventPublisherAmqp = function (_EventPublisher) {
     return _this;
   }
 
-  _createClass(EventPublisherAmqp, [{
+  (0, _createClass3.default)(EventPublisherAmqp, [{
     key: 'asyncInit',
     value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
         var ch;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+        return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -76,10 +100,9 @@ var EventPublisherAmqp = function (_EventPublisher) {
       });
       var eventName = this.options.service + '.' + event.type;
       event.service = this.options.service;
-      this.channel.publish(this.options.exchange, eventName, Buffer.from(JSON.stringify(event)), 'utf8');
+      this.channel.publish(this.options.exchange, eventName, Buffer.from((0, _stringify2.default)(event)), 'utf8');
     }
   }]);
-
   return EventPublisherAmqp;
 }(EventPublisher);
 

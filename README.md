@@ -24,6 +24,8 @@ npm install matuszeman/bb-service
 
 For ES5 compatible implementation use `require('bb-service/es5')`.
 
+See `src/examples*.spec.js` files for some examples.
+
 TODO
 
 # API
@@ -36,8 +38,15 @@ TODO
 <p>Provides generic param validation methods. Uses <a href="https://github.com/hapijs/joi/">Joi</a> for validation.
 Constructor accepts options parameter with Joi schema to validate the options against.</p>
 </dd>
+<dt><a href="#MessageEmitterAmqp">MessageEmitterAmqp</a></dt>
+<dd><p>AMQP message emitter</p>
+<p>Implements <a href="#MessageEmitter">MessageEmitter</a> interface.</p>
+</dd>
 <dt><a href="#MessagePublisher">MessagePublisher</a></dt>
 <dd><p>Message publisher</p>
+</dd>
+<dt><a href="#MessageSubscriberAmqp">MessageSubscriberAmqp</a></dt>
+<dd><p>Message subscriber implementing AMQP (e.g. rabbitmq)</p>
 </dd>
 <dt><a href="#MessageSubscriber">MessageSubscriber</a></dt>
 <dd><p>Message subscriber</p>
@@ -164,6 +173,54 @@ Validates params using Joi schema provided.
 Alias of [validateParams](#AbstractService+validateParams)
 
 **Kind**: instance method of <code>[AbstractService](#AbstractService)</code>  
+<a name="MessageEmitterAmqp"></a>
+
+## MessageEmitterAmqp
+AMQP message emitter
+
+Implements [MessageEmitter](#MessageEmitter) interface.
+
+**Kind**: global class  
+
+* [MessageEmitterAmqp](#MessageEmitterAmqp)
+    * [new MessageEmitterAmqp(messageEmitterAmqpOpts, amqpConnection)](#new_MessageEmitterAmqp_new)
+    * [.asyncInit()](#MessageEmitterAmqp+asyncInit)
+    * [.connect()](#MessageEmitterAmqp+connect)
+    * [.next(msg)](#MessageEmitterAmqp+next)
+
+<a name="new_MessageEmitterAmqp_new"></a>
+
+### new MessageEmitterAmqp(messageEmitterAmqpOpts, amqpConnection)
+
+| Param | Type |
+| --- | --- |
+| messageEmitterAmqpOpts | <code>Object</code> | 
+| messageEmitterAmqpOpts.exchange | <code>String</code> | 
+| amqpConnection | <code>Object</code> | 
+
+<a name="MessageEmitterAmqp+asyncInit"></a>
+
+### messageEmitterAmqp.asyncInit()
+Calls [connect](#MessageEmitterAmqp+connect)
+
+**Kind**: instance method of <code>[MessageEmitterAmqp](#MessageEmitterAmqp)</code>  
+<a name="MessageEmitterAmqp+connect"></a>
+
+### messageEmitterAmqp.connect()
+Creates a channel and an exchange
+
+**Kind**: instance method of <code>[MessageEmitterAmqp](#MessageEmitterAmqp)</code>  
+<a name="MessageEmitterAmqp+next"></a>
+
+### messageEmitterAmqp.next(msg)
+Impl of interface [MessageEmitter](#MessageEmitter)
+
+**Kind**: instance method of <code>[MessageEmitterAmqp](#MessageEmitterAmqp)</code>  
+
+| Param | Type |
+| --- | --- |
+| msg | <code>[Message](#Message)</code> | 
+
 <a name="MessagePublisher"></a>
 
 ## MessagePublisher
@@ -192,12 +249,71 @@ Emits the message
 
 **Kind**: instance method of <code>[MessagePublisher](#MessagePublisher)</code>  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| msg | <code>Object</code> |  |
-| msg.type | <code>string</code> | Message type |
-| msg.data | <code>Object</code> | The payload |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| msg | <code>Object</code> |  |  |
+| msg.type | <code>String</code> |  | Message type |
+| msg.data | <code>Object</code> |  | The payload |
+| [msg.ts] | <code>String</code> | <code>now</code> | ISO 8601 string |
 
+<a name="MessageSubscriberAmqp"></a>
+
+## MessageSubscriberAmqp
+Message subscriber implementing AMQP (e.g. rabbitmq)
+
+**Kind**: global class  
+
+* [MessageSubscriberAmqp](#MessageSubscriberAmqp)
+    * [new MessageSubscriberAmqp(messageSubscriberAmqpOpts, amqpConnection)](#new_MessageSubscriberAmqp_new)
+    * [.asyncInit()](#MessageSubscriberAmqp+asyncInit)
+    * [.connect()](#MessageSubscriberAmqp+connect)
+    * [.consume()](#MessageSubscriberAmqp+consume)
+    * [.purgeQueue()](#MessageSubscriberAmqp+purgeQueue)
+    * [.deleteQueue()](#MessageSubscriberAmqp+deleteQueue)
+
+<a name="new_MessageSubscriberAmqp_new"></a>
+
+### new MessageSubscriberAmqp(messageSubscriberAmqpOpts, amqpConnection)
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| messageSubscriberAmqpOpts | <code>Object</code> |  |  |
+| messageSubscriberAmqpOpts.exchange | <code>String</code> |  |  |
+| messageSubscriberAmqpOpts.queue | <code>String</code> |  |  |
+| messageSubscriberAmqpOpts.topics | <code>Array</code> |  | Message types to subscribe in format `SERVICE.MSG_TYPE` e.g. `MyService.*` subscribes to all MyService messages |
+| [messageSubscriberAmqpOpts.prefetch] | <code>Number</code> | <code>1</code> |  |
+| amqpConnection | <code>Object</code> |  | [http://www.squaremobius.net/amqp.node/channel_api.html#connect](http://www.squaremobius.net/amqp.node/channel_api.html#connect) |
+
+<a name="MessageSubscriberAmqp+asyncInit"></a>
+
+### messageSubscriberAmqp.asyncInit()
+Calls [connect](#MessageSubscriberAmqp+connect) and start consuming messages [consume](#MessageSubscriberAmqp+consume)
+
+**Kind**: instance method of <code>[MessageSubscriberAmqp](#MessageSubscriberAmqp)</code>  
+<a name="MessageSubscriberAmqp+connect"></a>
+
+### messageSubscriberAmqp.connect()
+Creates a channel, asserts an exchange, queue, and bind a queue to topics
+
+**Kind**: instance method of <code>[MessageSubscriberAmqp](#MessageSubscriberAmqp)</code>  
+<a name="MessageSubscriberAmqp+consume"></a>
+
+### messageSubscriberAmqp.consume()
+Start consuming a messages from the queue
+
+**Kind**: instance method of <code>[MessageSubscriberAmqp](#MessageSubscriberAmqp)</code>  
+<a name="MessageSubscriberAmqp+purgeQueue"></a>
+
+### messageSubscriberAmqp.purgeQueue()
+Purge queue
+
+**Kind**: instance method of <code>[MessageSubscriberAmqp](#MessageSubscriberAmqp)</code>  
+<a name="MessageSubscriberAmqp+deleteQueue"></a>
+
+### messageSubscriberAmqp.deleteQueue()
+Delete queue
+
+**Kind**: instance method of <code>[MessageSubscriberAmqp](#MessageSubscriberAmqp)</code>  
 <a name="MessageSubscriber"></a>
 
 ## MessageSubscriber
@@ -291,7 +407,7 @@ Validation helpers
 * [Validator](#Validator)
     * [.params(params, schema, [strict])](#Validator.params) ⇒ <code>Object</code>
     * [.paramsAsync(params, schema, [strict])](#Validator.paramsAsync) ⇒ <code>Promise</code>
-    * [.options(options, schema)](#Validator.options) ⇒ <code>Object</code>
+    * [.options(options, schema, [strict])](#Validator.options) ⇒ <code>Object</code>
     * [.api(api, schema, [desc])](#Validator.api) ⇒ <code>\*</code>
 
 <a name="Validator.params"></a>
@@ -323,16 +439,17 @@ Async version of [Validator#params](Validator#params)
 
 <a name="Validator.options"></a>
 
-### Validator.options(options, schema) ⇒ <code>Object</code>
+### Validator.options(options, schema, [strict]) ⇒ <code>Object</code>
 Validates service options
 
 **Kind**: static method of <code>[Validator](#Validator)</code>  
 **Returns**: <code>Object</code> - Validated options  
 
-| Param | Type |
-| --- | --- |
-| options | <code>Object</code> | 
-| schema | <code>Joi</code> | 
+| Param | Type | Default |
+| --- | --- | --- |
+| options | <code>Object</code> |  | 
+| schema | <code>Joi</code> |  | 
+| [strict] | <code>Joi</code> | <code>true</code> | 
 
 <a name="Validator.api"></a>
 
@@ -378,3 +495,5 @@ Validates object's API
 ```
 npm test
 ```
+
+Tests / examples currently require rabbitmq to be running on amqp://localhost

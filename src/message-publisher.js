@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const AbstractService = require('./abstract-service');
 const Validator = require('./validator');
 
 /**
@@ -7,9 +8,17 @@ const Validator = require('./validator');
  */
 
 /**
+ * @typedef {Object} Message
+ * @property {string} type
+ * @property {string} service
+ * @property {string} ts ISO 8601 string
+ * @property {Object} data
+ */
+
+/**
  * Message publisher
  */
-class MessagePublisher {
+class MessagePublisher extends AbstractService {
   /**
    *
    * @param {Object} messagePublisherOpts
@@ -17,7 +26,7 @@ class MessagePublisher {
    * @param {MessageEmitter} messageEmitter
    */
   constructor(messagePublisherOpts, messageEmitter) {
-    this.options = Validator.options(messagePublisherOpts, {
+    super(messagePublisherOpts, {
       service: Joi.string()
     });
 
@@ -27,14 +36,7 @@ class MessagePublisher {
   }
 
   validateMessage(msg) {
-    /**
-     * @typedef {Object} Message
-     * @property {string} type
-     * @property {string} service
-     * @property {string} ts ISO 8601 string
-     * @property {Object} [data]
-     */
-    msg = Validator.params(msg, {
+    msg = this.params(msg, {
       type: Joi.string(),
       data: Joi.object(),
       ts: Joi.string().isoDate().optional().default(new Date().toISOString())
@@ -47,11 +49,18 @@ class MessagePublisher {
    * Emits the message
    *
    * @param {Object} msg
-   * @param {string} msg.type Message type
+   * @param {String} msg.type Message type
    * @param {Object} msg.data The payload
+   * @param {String} [msg.ts=now] ISO 8601 string
    */
   emit(msg) {
     this.messageEmitter.next(this.validateMessage(msg));
+
+    this.logger.log({
+      level: 'debug',
+      type: 'messageEmitted',
+      msg: msg
+    });
   }
 }
 

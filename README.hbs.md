@@ -24,6 +24,8 @@ npm install matuszeman/bb-service
 
 For ES5 compatible implementation use `require('bb-service/es5')`.
 
+See `src/examples*.spec.js` files for some examples.
+
 TODO
 
 # API
@@ -37,3 +39,5 @@ TODO
 ```
 npm test
 ```
+
+Tests / examples currently require rabbitmq to be running on amqp://localhost

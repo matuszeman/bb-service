@@ -37,10 +37,11 @@ class Validator {
    *
    * @param {Object} options
    * @param {Joi} schema
+   * @param {Joi} [strict=true]
    * @returns {Object} Validated options
    */
-  static options(options = {}, schema = {}) {
-    return Joi.attempt(options, Joi.compile(schema).options({ allowUnknown: false, presence: 'required' }));
+  static options(options = {}, schema = {}, strict = true) {
+    return Joi.attempt(options, Joi.compile(schema).options({ stripUnknown: false, allowUnknown: !strict, presence: 'required' }));
   }
 
   /**

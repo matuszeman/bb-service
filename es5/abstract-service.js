@@ -1,9 +1,5 @@
 'use strict';
 
-var _promise = require('babel-runtime/core-js/promise');
-
-var _promise2 = _interopRequireDefault(_promise);
-
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -16,11 +12,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _ = require('lodash');
 var Joi = require('joi');
+var Validator = require('./validator');
 
 /**
  * Abstract service.
  *
- * Used as abstract service to extend from only.
+ * Provides generic param validation methods. Uses [Joi](https://github.com/hapijs/joi/) for validation.
+ * Constructor accepts options parameter with Joi schema to validate the options against.
  *
  * @example
  * const {AbstractService, Joi} = require('bb-service');
@@ -57,36 +55,49 @@ var AbstractService = function () {
    * @param {Object} options
    * @param {Joi} optionsSchema
    */
-  function AbstractService(options, optionsSchema) {
+  function AbstractService() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var optionsSchema = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     (0, _classCallCheck3.default)(this, AbstractService);
 
-    this.options = {};
-    this.optionsSchema = optionsSchema || {};
+    this.options = Validator.options(options, optionsSchema);
 
-    options = this._validateOptions(options || {}, this.optionsSchema);
-    this.options = options;
+    this.logger = {
+      log: function log() {}
+    };
   }
 
   /**
-   * Async validates params using Joi schema provided.
+   * Set service logger
    *
-   * @param {Object} params
-   * @param {Joi} schema
-   * @param {boolean} strict TODO
-   * @returns {Promise}
+   * @param {Object} logger
+   * @param {Function} logger.log Log function
    */
 
 
   (0, _createClass3.default)(AbstractService, [{
+    key: 'setLogger',
+    value: function setLogger(logger) {
+      this.logger = Validator.api(logger, {
+        log: Joi.func()
+      }, 'logger');
+    }
+
+    /**
+     * Async validates params using Joi schema provided.
+     *
+     * @param {Object} params
+     * @param {Joi} schema
+     * @param {boolean} strict TODO
+     * @returns {Promise}
+     */
+
+  }, {
     key: 'validateParamsAsync',
     value: function validateParamsAsync(params, schema) {
       var strict = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-      try {
-        return _promise2.default.resolve(this.validateParams(params, schema, strict));
-      } catch (err) {
-        return _promise2.default.reject(err);
-      }
+      return Validator.paramsAsync(params, schema, strict);
     }
 
     /**
@@ -113,11 +124,7 @@ var AbstractService = function () {
     value: function validateParams(params, schema) {
       var strict = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-      var ret = Joi.validate(params, schema, { stripUnknown: false, allowUnknown: !strict, presence: 'required' });
-      if (ret.error) {
-        throw ret.error;
-      }
-      return ret.value;
+      return Validator.params(params, schema, strict);
     }
 
     /**
@@ -128,15 +135,6 @@ var AbstractService = function () {
     key: 'params',
     value: function params(_params, schema, strict) {
       return this.validateParams(_params, schema, strict);
-    }
-  }, {
-    key: '_validateOptions',
-    value: function _validateOptions(options, schema) {
-      var ret = Joi.validate(options, schema, { allowUnknown: false, presence: 'required' });
-      if (ret.error) {
-        throw ret.error;
-      }
-      return ret.value;
     }
   }]);
   return AbstractService;

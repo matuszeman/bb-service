@@ -2,11 +2,13 @@
 
 const _ = require('lodash');
 const Joi = require('joi');
+const Validator = require('./validator');
 
 /**
  * Abstract service.
  *
- * Used as abstract service to extend from only.
+ * Provides generic param validation methods. Uses [Joi](https://github.com/hapijs/joi/) for validation.
+ * Constructor accepts options parameter with Joi schema to validate the options against.
  *
  * @example
  * const {AbstractService, Joi} = require('bb-service');
@@ -42,12 +44,24 @@ class AbstractService {
    * @param {Object} options
    * @param {Joi} optionsSchema
    */
-  constructor(options, optionsSchema) {
-    this.options = {};
-    this.optionsSchema = optionsSchema || {};
+  constructor(options = {}, optionsSchema = {}) {
+    this.options = Validator.options(options, optionsSchema);
 
-    options = this._validateOptions(options || {}, this.optionsSchema);
-    this.options = options;
+    this.logger = {
+      log: () => {}
+    };
+  }
+
+  /**
+   * Set service logger
+   *
+   * @param {Object} logger
+   * @param {Function} logger.log Log function
+   */
+  setLogger(logger) {
+    this.logger = Validator.api(logger, {
+      log: Joi.func()
+    }, 'logger');
   }
 
   /**
@@ -59,11 +73,7 @@ class AbstractService {
    * @returns {Promise}
    */
   validateParamsAsync(params, schema, strict = true) {
-    try {
-      return Promise.resolve(this.validateParams(params, schema, strict));
-    } catch(err) {
-      return Promise.reject(err);
-    }
+    return Validator.paramsAsync(params, schema, strict);
   }
 
   /**
@@ -82,11 +92,7 @@ class AbstractService {
    * @returns {*}
    */
   validateParams(params, schema, strict = true) {
-    const ret = Joi.validate(params, schema, { stripUnknown: false, allowUnknown: !strict, presence: 'required' });
-    if (ret.error) {
-      throw ret.error;
-    }
-    return ret.value;
+    return Validator.params(params, schema, strict);
   }
 
   /**
@@ -94,14 +100,6 @@ class AbstractService {
    */
   params(params, schema, strict) {
     return this.validateParams(params, schema, strict);
-  }
-
-  _validateOptions(options, schema) {
-    const ret = Joi.validate(options, schema, { allowUnknown: false, presence: 'required' });
-    if (ret.error) {
-      throw ret.error;
-    }
-    return ret.value;
   }
 }
 

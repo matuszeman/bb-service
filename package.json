@@ -27,7 +27,7 @@
     "test": "mocha --harmony 'src/**/*.spec.js'",
     "test-watch": "mocha --harmony --watch 'src/**/*.spec.js'",
     "docs": "jsdoc2md --configure jsdoc.json --template README.hbs.md \"src/**/*.js\" > README.md",
-    "es5": "babel src -d es5",
+    "es5": "babel src -d es5 --ignore '**/*.spec.js'",
     "build": "npm run es5 && npm run docs"
   },
   "author": "",

@@ -1,5 +1,5 @@
 {
-  "name": "bb-service",
+  "name": "@kapitchi/bb-service",
   "version": "1.1.0",
   "description": "Abstract service implementation",
   "main": "src/index.js",

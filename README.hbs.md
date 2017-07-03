@@ -1,5 +1,7 @@
 # bb-service
 
+[![Build Status](https://travis-ci.org/matuszeman/bb-service.svg?branch=master)](https://travis-ci.org/matuszeman/bb-service)
+
 TODO
 
 Abstract service implementation with the following spec:
@@ -10,23 +12,17 @@ Abstract service implementation with the following spec:
 * private methods: should be prefixed with "_"
 * implements setLogger method - logger API: `{ log: Function }`
 
-## Message publisher/subscriber
-
-TODO
-
 # Installation
 
 ```
-npm install matuszeman/bb-service
+npm install @kapitchi/bb-service
 ```
 
 # Usage
 
-For ES5 compatible implementation use `require('bb-service/es5')`.
-
-See `src/examples*.spec.js` files for some examples.
-
 TODO
+
+For ES5 compatible implementation use `require('@kapitchi/bb-service/es5')`.
 
 # API
 
@@ -34,10 +30,22 @@ TODO
 
 # Development
 
+Run the command below to builds es5 folder and README.md.
+
+```
+npm run build
+```
+
 ## Tests
 
 ```
 npm test
 ```
 
-Tests / examples currently require rabbitmq to be running on amqp://localhost
+# Contribute
+
+Please feel free to submit an issue/PR or contact me at matus.zeman@gmail.com.
+
+# License
+
+[MIT](LICENSE)

@@ -19,7 +19,8 @@
     "jsdoc-strip-async-await": "^0.1.0",
     "jsdoc-to-markdown": "^2.0.1",
     "mocha": "^3.4.1",
-    "sleep-promise": "^2.0.0"
+    "sleep-promise": "^2.0.0",
+    "joi": "^10.5.2"
   },
   "scripts": {
     "test": "mocha --harmony 'src/**/*.spec.js'",

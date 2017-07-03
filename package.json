@@ -3,11 +3,13 @@
   "version": "1.1.0",
   "description": "Abstract service implementation",
   "main": "src/index.js",
+  "author": "Matus Zeman <matus.zeman@gmail.com>",
   "peerDependencies": {
     "joi": "^10.5.2"
   },
   "dependencies": {
-    "lodash": "^4.17.2"
+    "lodash": "^4.17.2",
+    "babel-runtime": "^6.23.0"
   },
   "devDependencies": {
     "amqplib": "^0.5.1",
@@ -29,6 +31,16 @@
     "es5": "babel src -d es5 --ignore '**/*.spec.js'",
     "build": "npm run es5 && npm run docs"
   },
-  "author": "",
+  "files": [
+    "es5",
+    "src"
+  ],
+  "bugs": {
+    "url": "https://github.com/matuszeman/bb-service/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matuszeman/bb-service"
+  },
   "license": "MIT"
 }

@@ -52,9 +52,9 @@ Constructor accepts options parameter with Joi schema to validate the options ag
 * [AbstractService](#AbstractService)
     * [new AbstractService(options, optionsSchema)](#new_AbstractService_new)
     * [.setLogger(logger)](#AbstractService+setLogger)
-    * [.validateParamsAsync(params, schema, strict)](#AbstractService+validateParamsAsync) ⇒ <code>Promise</code>
+    * [.validateParamsAsync(params, schema, [strict])](#AbstractService+validateParamsAsync) ⇒ <code>Promise</code>
     * [.paramsAsync()](#AbstractService+paramsAsync)
-    * [.validateParams(params, schema, strict)](#AbstractService+validateParams) ⇒ <code>\*</code>
+    * [.validateParams(params, schema, [strict])](#AbstractService+validateParams) ⇒ <code>\*</code>
     * [.params()](#AbstractService+params)
 
 <a name="new_AbstractService_new"></a>
@@ -68,7 +68,7 @@ Constructor accepts options parameter with Joi schema to validate the options ag
 
 **Example**  
 ```js
-const {AbstractService, Joi} = require('bb-service');
+const {AbstractService, Joi} = require('@kapitchi/bb-service');
 
 class MyService extends AbstractService {
   constructor(myServiceOpts) {
@@ -110,7 +110,7 @@ Set service logger
 
 <a name="AbstractService+validateParamsAsync"></a>
 
-### abstractService.validateParamsAsync(params, schema, strict) ⇒ <code>Promise</code>
+### abstractService.validateParamsAsync(params, schema, [strict]) ⇒ <code>Promise</code>
 Async validates params using Joi schema provided.
 
 **Kind**: instance method of <code>[AbstractService](#AbstractService)</code>  
@@ -119,7 +119,7 @@ Async validates params using Joi schema provided.
 | --- | --- | --- | --- |
 | params | <code>Object</code> |  |  |
 | schema | <code>Joi</code> |  |  |
-| strict | <code>boolean</code> | <code>true</code> | TODO |
+| [strict] | <code>boolean</code> | <code>true</code> | false - allows unknown parameters |
 
 <a name="AbstractService+paramsAsync"></a>
 
@@ -129,16 +129,16 @@ Alias of [validateParamsAsync](#AbstractService+validateParamsAsync)
 **Kind**: instance method of <code>[AbstractService](#AbstractService)</code>  
 <a name="AbstractService+validateParams"></a>
 
-### abstractService.validateParams(params, schema, strict) ⇒ <code>\*</code>
+### abstractService.validateParams(params, schema, [strict]) ⇒ <code>\*</code>
 Validates params using Joi schema provided.
 
 **Kind**: instance method of <code>[AbstractService](#AbstractService)</code>  
 
-| Param | Type | Default |
-| --- | --- | --- |
-| params | <code>Object</code> |  | 
-| schema | <code>Joi</code> |  | 
-| strict | <code>boolean</code> | <code>true</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>Object</code> |  |  |
+| schema | <code>Joi</code> |  |  |
+| [strict] | <code>boolean</code> | <code>true</code> | false - allows unknown parameters |
 
 <a name="AbstractService+params"></a>
 

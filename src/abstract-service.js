@@ -11,7 +11,7 @@ const Validator = require('./validator');
  * Constructor accepts options parameter with Joi schema to validate the options against.
  *
  * @example
- * const {AbstractService, Joi} = require('bb-service');
+ * const {AbstractService, Joi} = require('@kapitchi/bb-service');
  *
  * class MyService extends AbstractService {
  *   constructor(myServiceOpts) {
@@ -69,7 +69,7 @@ class AbstractService {
    *
    * @param {Object} params
    * @param {Joi} schema
-   * @param {boolean} strict TODO
+   * @param {boolean} [strict=true] false - allows unknown parameters
    * @returns {Promise}
    */
   validateParamsAsync(params, schema, strict = true) {
@@ -79,7 +79,7 @@ class AbstractService {
   /**
    * Alias of {@link AbstractService#validateParamsAsync}
    */
-  paramsAsync(params, schema, strict) {
+  paramsAsync(params, schema, strict = true) {
     return this.validateParamsAsync(params, schema, strict);
   }
 
@@ -88,7 +88,7 @@ class AbstractService {
    *
    * @param {Object} params
    * @param {Joi} schema
-   * @param {boolean} strict
+   * @param {boolean} [strict=true] false - allows unknown parameters
    * @returns {*}
    */
   validateParams(params, schema, strict = true) {
@@ -98,7 +98,7 @@ class AbstractService {
   /**
    * Alias of {@link AbstractService#validateParams}
    */
-  params(params, schema, strict) {
+  params(params, schema, strict = true) {
     return this.validateParams(params, schema, strict);
   }
 }

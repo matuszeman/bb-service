@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "Abstract service implementation",
   "main": "src/index.js",
+  "types": "index.d.ts",
   "author": "Matus Zeman <matus.zeman@gmail.com>",
   "peerDependencies": {
     "joi": "^10.5.2"

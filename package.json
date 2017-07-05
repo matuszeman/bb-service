@@ -6,7 +6,7 @@
   "types": "index.d.ts",
   "author": "Matus Zeman <matus.zeman@gmail.com>",
   "peerDependencies": {
-    "joi": "^10.5.2"
+    "joi": "^9"
   },
   "dependencies": {
     "lodash": "^4.17.2",

@@ -34,7 +34,8 @@
   },
   "files": [
     "es5",
-    "src"
+    "src",
+    "index.d.ts"
   ],
   "bugs": {
     "url": "https://github.com/matuszeman/bb-service/issues"

@@ -7,7 +7,8 @@ declare module "@kapitchi/bb-service" {
   }
 
   export class AbstractService {
-    public options: any;
+    protected options: any;
+    protected logger: Logger;
     constructor(options?: any, optionsSchema?: any);
     public setLogger(logger: Logger);
     protected params(params: any, schema: any): any;

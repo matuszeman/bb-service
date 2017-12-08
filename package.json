@@ -1,6 +1,6 @@
 {
   "name": "@kapitchi/bb-service",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Abstract service implementation",
   "main": "src/index.js",
   "types": "index.d.ts",
